@@ -19,7 +19,7 @@ import {
     projectOnPlane, anyPerpendicular, wrap, clamp01, EPSILON, scaleAndAdd, lerp,
 } from './math';
 import {
-    Curve, curve, evalPosition, evalDirection, split, buildLengthTable, tAtLength, lengthAtT, nearestT,
+    Curve, curve, evalPosition, evalDirection, evalDerivative, split, buildLengthTable, tAtLength, arcLength, nearestT,
 } from './curve';
 
 export enum TangentMode {
@@ -440,15 +440,43 @@ export function curvePointAt(cache: SplineCache, t: number, out: CurvePoint = { 
         else hi = mid - 1;
     }
     out.index = lo;
-    out.t = tAtLength(cache.tables[lo], d - cache.starts[lo]);
+    out.t = refineT(cache.curves[lo], cache.tables[lo], d - cache.starts[lo]);
     return out;
+}
+
+const _dv = v3();
+
+/** Exact arc length from 0 to t: the table up to the sample before t, integrated from there. */
+function exactLengthAt(c: Curve, table: Float64Array, t: number): number {
+    const n = table.length;
+    if (t <= 0) return 0;
+    if (t >= 1) return table[n - 1];
+    const i = Math.min(Math.floor(t * (n - 1)), n - 2);
+    return table[i] + arcLength(c, i / (n - 1), t);
+}
+
+/** t at arc length d: table lookup, then Newton steps on the exact length. */
+function refineT(c: Curve, table: Float64Array, d: number): number {
+    let t = tAtLength(table, d);
+    const n = table.length;
+    if (t <= 0 || t >= 1) return t;
+    const i = Math.min(Math.floor(t * (n - 1)), n - 2);
+    const lo = i / (n - 1);
+    const hi = (i + 1) / (n - 1);
+    for (let k = 0; k < 2; k++) {
+        const err = table[i] + arcLength(c, lo, t) - d;
+        const speed = len(evalDerivative(_dv, c, t));
+        if (speed < EPSILON) break;
+        t = Math.min(hi, Math.max(lo, t - err / speed));
+    }
+    return t;
 }
 
 /** Normalized distance (0..1) of a curve point. */
 export function normalizedTOf(cache: SplineCache, index: number, t: number): number {
     if (!cache.curves.length) return 0;
     if (cache.total <= EPSILON) return (index + t) / cache.curves.length;
-    return (cache.starts[index] + lengthAtT(cache.tables[index], t)) / cache.total;
+    return (cache.starts[index] + exactLengthAt(cache.curves[index], cache.tables[index], t)) / cache.total;
 }
 
 /** Knot-index unit (curve index + curve t, e.g. 2.5 = halfway between knots 2 and 3) to normalized t. */

@@ -1,0 +1,188 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#app {
+    flex: 1;
+    overflow: auto;
+}
+
+.sp-root {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 6px 8px 12px;
+    font-size: 12px;
+    color: var(--color-normal-contrast, #ccc);
+}
+
+.sp-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.sp-tool {
+    min-width: 72px;
+}
+
+.sp-flex {
+    flex: 1;
+}
+
+.sp-orient {
+    width: 84px;
+}
+
+.sp-status {
+    padding: 4px 6px;
+    border-radius: 3px;
+    background: var(--color-normal-fill-emphasis, rgba(255, 255, 255, 0.04));
+    color: var(--color-normal-contrast-weaker, #aaa);
+    line-height: 1.4;
+}
+
+.sp-status.warn {
+    color: var(--color-warn-fill, #d9a33a);
+}
+
+.sp-box {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 6px;
+    border: 1px solid var(--color-normal-border, rgba(255, 255, 255, 0.08));
+    border-radius: 3px;
+}
+
+.sp-title {
+    font-weight: bold;
+    margin-bottom: 2px;
+}
+
+.sp-badge {
+    margin-left: 6px;
+    padding: 0 5px;
+    border-radius: 8px;
+    font-weight: normal;
+    font-size: 10px;
+    background: rgba(255, 196, 64, 0.25);
+    color: #ffc440;
+}
+
+.sp-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 24px;
+}
+
+.sp-label {
+    width: 84px;
+    flex: none;
+    color: var(--color-normal-contrast-weaker, #aaa);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sp-grow {
+    flex: 1;
+    min-width: 0;
+}
+
+.sp-vec {
+    flex: 1;
+    display: grid;
+    grid-template-columns: auto 1fr auto 1fr auto 1fr;
+    align-items: center;
+    gap: 3px;
+    min-width: 0;
+}
+
+.sp-vec.two {
+    grid-template-columns: auto 1fr auto 1fr;
+}
+
+.sp-vec label {
+    font-size: 11px;
+    padding: 0 1px;
+    color: var(--color-normal-contrast-weaker, #aaa);
+}
+
+.sp-vec label.x { color: #e8584a; }
+.sp-vec label.y { color: #8ccf4d; }
+.sp-vec label.z { color: #4f8ff0; }
+
+.sp-vec ui-num-input {
+    min-width: 0;
+    width: 100%;
+}
+
+.mixed {
+    opacity: 0.55;
+}
+
+.sp-seg {
+    flex: 1;
+    display: flex;
+    gap: 2px;
+}
+
+.sp-seg ui-button {
+    flex: 1;
+    min-width: 0;
+}
+
+.sp-actions,
+.sp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+    gap: 4px;
+}
+
+.sp-group > summary {
+    cursor: pointer;
+    padding: 3px 0;
+    color: var(--color-normal-contrast-weaker, #bbb);
+    user-select: none;
+}
+
+.sp-group[open] > summary {
+    margin-bottom: 4px;
+}
+
+.sp-checks {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.sp-keys {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+}
+
+.sp-keys td {
+    padding: 2px 4px;
+    border-bottom: 1px solid var(--color-normal-border, rgba(255, 255, 255, 0.06));
+    vertical-align: top;
+}
+
+.sp-keys td:first-child {
+    white-space: nowrap;
+    color: var(--color-normal-contrast, #ddd);
+}
+
+.sp-keys td:last-child {
+    color: var(--color-normal-contrast-weaker, #aaa);
+}
+
+.sp-keys td.sp-sub {
+    padding-top: 6px;
+    font-weight: bold;
+    color: var(--color-normal-contrast, #ddd);
+}

@@ -186,11 +186,11 @@ export function eventCoordMode(): EventCoords {
 function canvasElement(): HTMLCanvasElement | null {
     try {
         const c = (cc().game as any).canvas as HTMLCanvasElement | null;
-        if (c && c.getBoundingClientRect) return c;
+        if (c && typeof (c as any).getBoundingClientRect === 'function') return c;
     } catch {
         // fall through
     }
-    return document.querySelector('canvas');
+    return typeof document !== 'undefined' ? document.querySelector('canvas') : null;
 }
 
 /**

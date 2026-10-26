@@ -239,7 +239,7 @@ export class SplineInstantiate extends Component {
         mix(this.items.length);
         for (const it of this.items) {
             mix(it.probability);
-            const id = it.prefab ? (it.prefab as any)._uuid || it.prefab.name : '';
+            const id = it.prefab ? String((it.prefab as any)._uuid || it.prefab.name || 'prefab') : '';
             for (let i = 0; i < id.length; i++) mix(id.charCodeAt(i));
         }
         if (c && c.isValid) {
@@ -395,14 +395,14 @@ export class SplineInstantiate extends Component {
         for (let i = 1; i <= steps && ts.length < MAX; i++) {
             const ti = i / steps;
             c.evaluatePosition(ti, si, p);
-            if (Vec3.distance(p, from) >= want) {
+            if (Vec3.distance(p, from) >= want - 1e-6) {
                 // Refine between the previous step and this one.
                 let a = t;
                 let b = ti;
                 for (let k = 0; k < 12; k++) {
                     const m = (a + b) / 2;
                     c.evaluatePosition(m, si, p);
-                    if (Vec3.distance(p, from) >= want) b = m;
+                    if (Vec3.distance(p, from) >= want - 1e-6) b = m;
                     else a = m;
                 }
                 if (closed && b >= 1 - 1e-6) break;
