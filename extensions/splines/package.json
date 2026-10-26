@@ -1,0 +1,134 @@
+{
+    "$schema": "./@types/schema/package/index.json",
+    "package_version": 2,
+    "name": "splines",
+    "version": "1.0.0",
+    "author": "Thanh Hoang",
+    "editor": ">=3.8.6",
+    "scripts": {
+        "preinstall": "node ./scripts/preinstall.js",
+        "build": "tsc && node ./scripts/build.js",
+        "watch": "node ./scripts/build.js --watch",
+        "typecheck": "tsc",
+        "test": "node ./tests/run.js",
+        "preview": "node ./tests/preview/build.js"
+    },
+    "description": "i18n:splines.description",
+    "main": "./dist/main.js",
+    "devDependencies": {
+        "@cocos/creator-types": "^3.8.6",
+        "@types/node": "^18.17.1",
+        "esbuild": "^0.24.2",
+        "typescript": "^5.8.2",
+        "vue": "^3.3.4"
+    },
+    "panels": {
+        "default": {
+            "title": "i18n:splines.panel_title",
+            "type": "dockable",
+            "main": "dist/panels/default.js",
+            "icon": "./static/icon.png",
+            "size": {
+                "min-width": 260,
+                "min-height": 200,
+                "width": 320,
+                "height": 520
+            }
+        }
+    },
+    "contributions": {
+        "scene": {
+            "script": "./dist/scene.js"
+        },
+        "asset-db": {
+            "mount": {
+                "path": "./assets",
+                "readonly": false
+            }
+        },
+        "inspector": {
+            "section": {
+                "node": {
+                    "SplineContainer": "./dist/inspector/spline-container.js",
+                    "SplineAnimate": "./dist/inspector/spline-animate.js",
+                    "SplineExtrude": "./dist/inspector/spline-extrude.js",
+                    "SplineInstantiate": "./dist/inspector/spline-instantiate.js"
+                }
+            }
+        },
+        "menu": [
+            {
+                "path": "i18n:menu.panel",
+                "label": "i18n:splines.menu.panel",
+                "message": "open-panel"
+            },
+            {
+                "path": "i18n:menu.node/Spline",
+                "label": "i18n:splines.menu.draw",
+                "message": "create-spline",
+                "params": ["draw"]
+            },
+            {
+                "path": "i18n:menu.node/Spline",
+                "label": "i18n:splines.menu.line",
+                "message": "create-spline",
+                "params": ["line"]
+            },
+            {
+                "path": "i18n:menu.node/Spline",
+                "label": "i18n:splines.menu.square",
+                "message": "create-spline",
+                "params": ["square"]
+            },
+            {
+                "path": "i18n:menu.node/Spline",
+                "label": "i18n:splines.menu.rounded_square",
+                "message": "create-spline",
+                "params": ["rounded-square"]
+            },
+            {
+                "path": "i18n:menu.node/Spline",
+                "label": "i18n:splines.menu.circle",
+                "message": "create-spline",
+                "params": ["circle"]
+            },
+            {
+                "path": "i18n:menu.node/Spline",
+                "label": "i18n:splines.menu.polygon",
+                "message": "create-spline",
+                "params": ["polygon"]
+            },
+            {
+                "path": "i18n:menu.node/Spline",
+                "label": "i18n:splines.menu.star",
+                "message": "create-spline",
+                "params": ["star"]
+            },
+            {
+                "path": "i18n:menu.node/Spline",
+                "label": "i18n:splines.menu.helix",
+                "message": "create-spline",
+                "params": ["helix"]
+            },
+            {
+                "path": "i18n:menu.extension/Splines",
+                "label": "i18n:splines.menu.diagnostics",
+                "message": "save-diagnostics"
+            }
+        ],
+        "messages": {
+            "open-panel": {
+                "methods": ["openPanel"]
+            },
+            "create-spline": {
+                "methods": ["createSpline"]
+            },
+            "save-diagnostics": {
+                "methods": ["saveDiagnostics"]
+            },
+            "scene:ready": {
+                "methods": ["onSceneReady"]
+            }
+        }
+    }
+}
