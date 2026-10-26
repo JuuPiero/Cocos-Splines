@@ -506,6 +506,7 @@ function getCurve(s, i, out = curve()) {
 }
 var UP_SAMPLES = 16;
 var _hashBuf = new Float64Array(1), _hashInt = new Int32Array(_hashBuf.buffer);
+var _dv = v3();
 function curveUp(s, cache2, index, t, out) {
   let table = cache2.ups[index];
   table || (table = cache2.ups[index] = buildUpTable(s, cache2.curves[index], index));
@@ -1102,7 +1103,7 @@ function canvasElement() {
     if (c2 && typeof c2.getBoundingClientRect == "function") return c2;
   } catch {
   }
-  return document.querySelector("canvas");
+  return typeof document < "u" ? document.querySelector("canvas") : null;
 }
 function eventToScreen(cam2, ev) {
   let canvas = canvasElement(), hasClient = typeof ev.clientX == "number" && typeof ev.clientY == "number", fromClient = null, css = null;
@@ -1670,6 +1671,7 @@ function closedState() {
   return splines.size ? shared([...splines].map((s) => !!s.closed)) : null;
 }
 function panelState() {
+  S.selection.validate(S.lastTargets) && bumpState();
   let list = S.selection.all();
   return {
     primary: S.primary,
@@ -2599,8 +2601,19 @@ function drawDown(cam2, x, y, ev) {
     return insertOnCurve2(hit.comp, hit.spline, hit.curve, hit.t), !1;
   let place = placement(cam2, x, y, comp);
   if (!place) return !1;
-  let target = S.drawing ? S.drawing.comp : comp, session = new EditSession([target]), state = { spline: -1, knot: -1, end: "end" };
-  session.apply(() => {
+  let target = S.drawing ? S.drawing.comp : comp, session = new EditSession([target]), a = {
+    kind: "draw",
+    comp: target,
+    spline: -1,
+    knot: -1,
+    part: "out",
+    x0: x,
+    y0: y,
+    dragging: !1,
+    session,
+    normal: place.normal
+  };
+  return active = a, session.apply(() => {
     if (!S.drawing) {
       let index2 = target.splines.findIndex((s2) => s2.knots.length === 0);
       index2 < 0 && (target.splines.push(factory.spline()), index2 = target.splines.length - 1), S.drawing = { comp: target, spline: index2, end: "end" };
@@ -2614,27 +2627,8 @@ function drawDown(cam2, x, y, ev) {
     } else
       knotRotation(k.rotation, v3(), localNormal);
     let index = d.end === "end" ? s.knots.length : 0;
-    containerInsertKnot(target, d.spline, index, k), state.spline = d.spline, state.knot = index, state.end = d.end;
-  }), active = {
-    kind: "draw",
-    comp: target,
-    spline: -1,
-    knot: -1,
-    part: "out",
-    x0: x,
-    y0: y,
-    dragging: !1,
-    session,
-    normal: place.normal
-  };
-  let a = active, sync = () => {
-    if (state.knot < 0) {
-      setTimeout(sync, 10);
-      return;
-    }
-    a.spline = state.spline, a.knot = state.knot, a.part = state.end === "end" ? "out" : "in", S.selection.set([{ comp: target, spline: state.spline, knot: state.knot, part: "knot" }]), selectionChanged();
-  };
-  return sync(), !1;
+    containerInsertKnot(target, d.spline, index, k), a.spline = d.spline, a.knot = index, a.part = d.end === "end" ? "out" : "in", S.selection.set([{ comp: target, spline: d.spline, knot: index, part: "knot" }]), selectionChanged();
+  }), !1;
 }
 function dirToLocalSafe(comp, world) {
   let o = toLocal(comp, v3()), p = toLocal(comp, world);

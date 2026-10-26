@@ -116,6 +116,14 @@
                 "message": "save-diagnostics"
             }
         ],
+        "profile": {
+            "editor": {
+                "settings": {
+                    "default": {},
+                    "label": "Splines display and tool settings"
+                }
+            }
+        },
         "messages": {
             "open-panel": {
                 "methods": ["openPanel"]

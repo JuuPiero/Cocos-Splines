@@ -121,7 +121,7 @@ var MODE_NAMES = ["Auto Smooth", "Linear", "Mirrored", "Continuous", "Broken"], 
 .sp-knots td.idx { width: 22px; text-align: right; color: var(--color-normal-contrast-weaker, #aaa); cursor: pointer; }
 .sp-knots td.pos { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px; }
 .sp-knots td.pos ui-num-input, .sp-knots td.more ui-num-input { width: 100%; min-width: 0; }
-.sp-knots td.mode { width: 96px; }
+.sp-knots td.mode { width: 108px; }
 .sp-knots td.mode ui-select { width: 100%; }
 .sp-knots td.tools { width: 44px; white-space: nowrap; }
 .sp-knots td.tools span { cursor: pointer; padding: 0 3px; color: var(--color-normal-contrast-weaker, #aaa); }

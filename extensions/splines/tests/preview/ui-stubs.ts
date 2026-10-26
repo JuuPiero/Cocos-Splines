@@ -31,6 +31,12 @@ class UIProp extends UIBase {
             :host([no-label]) .l{display:none}.c{flex:1;display:flex;min-width:0}</style>
             <div class="l"><slot name="label"></slot></div><div class="c"><slot name="content"></slot></div>`;
     }
+    /** Like <ui-prop type="dump">.render(dump): label + value text. */
+    render(dump: any) {
+        const v = dump?.value;
+        const text = v && typeof v === 'object' ? (v.uuid !== undefined ? (v.uuid || 'None') : JSON.stringify(v)) : String(v);
+        this.innerHTML = `<span slot="label">${dump?.displayName || dump?.name || ''}</span><span slot="content" style="color:#ddd">${text}</span>`;
+    }
 }
 
 /** A native <input>/<select>/<textarea> in a shadow root. */
